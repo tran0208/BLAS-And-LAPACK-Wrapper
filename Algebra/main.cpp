@@ -100,17 +100,17 @@ int main(void)
 	printf("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n");
 	printf("\n\n");
 
-	double A4[30] = {  -74 ,  80 ,  18 , -11 , -4 ,
+	double A5[30] = {  -74 ,  80 ,  18 , -11 , -4 ,
                         14 , -69 ,  21 ,  28 , 0 , 
                         66 , -72 ,  -5 ,   7 , 1 ,
                        -12 ,  66 , -30 , -23 , 3 ,
                          3 ,   8 ,  -7 ,  -4 , 1 ,
                          4 , -12 ,   4 ,   4 , 0};
-	double b4[6] = { 51 , -61 , -56 , 69 , 10 , -12 };
-	Matrix P4(A4,6,5); 
-	Matrix example5 = P4 | b4;
-	Matrix Q4(b4, 6, 1);
-	Matrix example6 = P4 | Q4;
+	double b5[6] = { 51 , -61 , -56 , 69 , 10 , -12 };
+	Matrix P5(A5,6,5); 
+	Matrix example5 = P5 | b5;
+	Matrix Q5(b5, 6, 1);
+	Matrix example6 = P5 | Q5;
 
 	printf("\n X5 = \n ");
 	example5.printMatrix();
@@ -123,29 +123,29 @@ int main(void)
 	printf("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n");
 	printf("\n\n");
  
-	double *x5 = new double[4];
-	double *y5 = new double[3];
-	double A5[] = { 1 ,  2 ,  1 , 4  ,
+	double *x7 = new double[4];
+	double *y7 = new double[3];
+	double A7[] = { 1 ,  2 ,  1 , 4  ,
                    -1 ,  1 ,  1 , 1  , 
                    -1 , -2 , -1 , 1  , 
                    -1 ,  2 , -1 , -1 , 
                     1 ,  1 ,  1 , 2} ;
-	double B5[] = { 1 ,  2 , 2 ,
+	double B7[] = { 1 ,  2 , 2 ,
                    -1 ,  1 , -2 , 
                     3 ,  1 , 6 ,
                     2 , -2 , 4 ,
                     1 , -1 , 2 };
-	double d5[] = { 7.99 , 0.98 , -2.98 ,3.04 , 4.02 };
-    Matrix P5(A5, B5, d5, 5, 4, 3); 
-	int info = P5.solve(x5,y5);
-	if (info == 0)
+	double d7[] = { 7.99 , 0.98 , -2.98 ,3.04 , 4.02 };
+    Matrix P7(A7, B7, d7, 5, 4, 3); 
+	int info7 = P7.solve(x7,y7);
+	if (info7 == 0)
 	{
-		printf("X7 = [ %f , %f , %f , %f ] \n", x5[0], x5[1], x5[2], x5[3]);
-		printf("Y7 = [ %f , %f , %f  ] \n", y5[0], y5[1], y5[2] );
+		printf("X7 = [ %f , %f , %f , %f ] \n", x7[0], x7[1], x7[2], x7[3]);
+		printf("Y7 = [ %f , %f , %f  ] \n", y7[0], y7[1], y7[2] );
 	}
 	else
 	{
-		fprintf(stderr, "dggglm_ fails %d\n", info);
+		fprintf(stderr, "dggglm_ fails %d\n", info7);
 	} 
 
 	printf("\n\n");
@@ -153,48 +153,29 @@ int main(void)
 	printf("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n");
 	printf("\n\n");
  
-	double A6[] = { 1 ,  1 , 1 , 
+	double A8[] = { 1 ,  1 , 1 , 
                     1 ,  3 , 1 , 
                     1 , -1 , 1 , 
                     1 ,  1 , 1};
-	double H6[] = { 1 , 1 , 1 ,
+	double H8[] = { 1 , 1 , 1 ,
 		            1 , 1 , -1 };
-	double D6[] = { 1 , 
+	double D8[] = { 1 , 
                     2 , 
                     3 , 
                     4 };
-	double F6[] = { 7 ,
+	double F8[] = { 7 ,
 		            4 };
-	double *X6 = new double[3];
-	Matrix P6(A6, D6, H6, F6, 4, 3, 2);
-    P6.solve(X6);
+	double *x8 = new double[3];
+	Matrix P8(A8, D8, H8, F8, 4, 3, 2);
+    int info8 = P8.solve(x8);
 	printf("\n X8 = \n ");
-	Matrix::printMatrix(X6,3,1);
+	Matrix::printMatrix(x8,3,1);
 
 	printf("\n\n");
 	printf("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n");
 	printf("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n");
 	printf("\n\n");
    
-	double G[] = { 1 , 1 , 1 ,
-		           1 , 1 , 1 ,
-		           1 , 1 , 1 ,
-		           1 , 1 , 1 ,
-		           1 , 1 , 1 };
-    Matrix P7(G,5,3);
-    Matrix W1 = P7*20;
-	printf("\n X9 = \n ");
-    W1.printMatrix();
-	printf("-------------------------------------------------------------------"); 
-	Matrix W2 = 40*P7;
-	printf("\n X10 = \n ");
-	W2.printMatrix(); 
-    
-    
-	printf("\n\n");
-	printf("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n");
-	printf("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n");
-	printf("\n\n");
 
 	printf("Press any key to exit\n");
 	_getch(); 

@@ -1,0 +1,682 @@
+
+\documentclass[a4paper]{article}
+%\documentclass[11pt]{article}
+%\documentclass[12pt]{article}
+%LATEX HEADER
+
+\ifx\pdfoutput\undefined
+% we are running LaTeX, not pdflatex
+\usepackage{graphicx}
+\usepackage{overpic}
+\else
+% we are running pdflatex, so convert .eps files to .pdf
+%\usepackage[pdftex]{graphicx}
+\usepackage{graphicx}
+\usepackage{overpic}
+\usepackage{epstopdf}
+\fi 
+
+\usepackage{mathrsfs}
+\usepackage{color} 
+\usepackage{verbatim}
+\usepackage{epsfig}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{float}
+\usepackage{setspace}
+\usepackage{moreverb}
+\usepackage{alltt}
+\usepackage{ulem}
+\usepackage{amsthm}
+\usepackage{cancel} 
+\usepackage{verbatim}
+
+
+
+
+\setlength{\textwidth}{17cm}
+% for US letter
+%\setlength{\textheight}{22.5cm}
+% for A4
+
+\setlength{\textheight}{24cm}
+\setlength{\parskip}{0.3cm plus 0.1 cm minus 0.1 cm}
+\setlength{\oddsidemargin}{-0.5cm}
+\setlength{\topmargin}{0.5cm}
+\setlength{\headsep}{0cm}
+\setlength{\headheight}{0cm}
+\setlength{\parindent}{0.5cm}
+% remove extra space at top and bottom of lists
+%\setlength{\partopsep}{-2ex}
+
+
+% section,subsection and subsubsection 
+% numbering enable
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{3}
+
+\newcommand{\bit}{\begin{itemize}}
+\newcommand{\eit}{\end{itemize}}
+\newcommand{\bnum}{\begin{enumerate}}
+\newcommand{\enum}{\end{enumerate}}
+\newcommand{\bt}{\begin{tabular}}
+\newcommand{\et}{\end{tabular}}
+\newcommand{\be}{\begin{equation}}
+\newcommand{\ee}{\end{equation}}
+\newcommand{\pdv}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\dv}[2]{\frac{d #1}{d #2}}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\vect}[1]{\mbox{\boldmath $#1$}}
+\newcommand{\subs}[1]{$_{#1}$}
+\newcommand{\sups}[1]{$^{#1}$}
+%\pagestyle{empty}% no page numbering
+
+%in order to obtain doublspacing put following 2 lines in the
+%preamble and the last line just above the place where the
+%double-spacing should commence.
+\def\doublespaced{\baselineskip=1.5\normalbaselineskip}
+\let\doublespace=\doublespaced
+
+\begin{document}
+
+
+% for double spacing
+\title{\Huge A Wrapper Class For LAPACK and BLAS }
+% \Large
+\date{\today}
+\author{Minh Tran\\Email: minh.t.tran@adelaide.edu.au}
+\maketitle
+% %\tableofcontents
+% %\clearpage
+
+ 
+
+
+
+\section{Introduction} \label{Introduction}
+The Matrix class is a wrapper class for LAPACK and BLAS. The class implements matrix solvers and operators typically used in mathematical modelling of physical systems. It is the hope of the author that the class will be useful for anyone working with C++ projects that require matrix operations.
+
+
+
+\section{Examples} \label{Examples}
+The use of class will be demonstrated through examples.
+
+
+ 
+
+
+\subsection{Example 1}
+ 
+
+ 
+$\boldsymbol{A}_{1}$ = $\begin{bmatrix}
+5 &  7 &  6 & 5 \\
+7 & 10 &  8 & 7 \\
+6 &  8 & 10 & 9 \\
+5 &  7 &  9 & 10 
+ \end{bmatrix}$ \hspace{0.5cm} , \hspace{0.5cm} 
+$\boldsymbol{b}_{1}$ = $\begin{bmatrix}
+23 \\ 
+32 \\
+33 \\
+31 
+\end{bmatrix}$
+
+\vspace{0.5cm}
+
+Consider the system,
+\begin{equation*}
+\begin{aligned}
+\left(5*\boldsymbol{A}_{1}+\boldsymbol{A}_{1}*15\right)  * \boldsymbol{x}_{1}  = \boldsymbol{b}_{1}
+\end{aligned}
+\end{equation*}
+
+
+
+
+
+\begin{equation*}
+\begin{aligned}
+\boldsymbol{x}_{1}  &= \left(5*\boldsymbol{A}_{1}+\boldsymbol{A}_{1}*15\right)^{-1} * \boldsymbol{b}_{1} \\
+\boldsymbol{x}_{1}  &= 
+\begin{bmatrix} 
+		0.050 \\
+		0.050 \\
+		0.050 \\
+		0.050
+\end{bmatrix}
+\end{aligned}
+\end{equation*}
+
+
+
+Below are codes to compute $\boldsymbol{x}_{1}$. The result is stored in the variable \texttt{example1}.
+\begin{verbatim} 
+double A1[] = { 5 ,  7 ,  6 , 5 ,
+                7 , 10 ,  8 , 7 ,
+                6 ,  8 , 10 , 9 ,
+                5 ,  7 ,  9 , 10 };
+double b1[] = { 23 , 32 , 33 , 31 };
+Matrix P1(A1,4);   
+Matrix example1 = (5*P1+P1*15) | b1;  
+\end{verbatim}
+
+
+
+\subsection{Example 2}
+
+
+$\boldsymbol{A}_{2}$ = $\begin{bmatrix}
+0 & 1 & 2 \\
+3 & 4 & 5 \\ 
+6 & 7 & 0 \\
+\end{bmatrix}$ \hspace{0.5cm} , \hspace{0.5cm} 
+$\boldsymbol{b}_{2}$ = $\begin{bmatrix}
+1 \\ 
+2 \\
+3 \\ 
+\end{bmatrix}$
+
+\vspace{0.5cm}
+
+Consider the system,
+\begin{equation*}
+\begin{aligned}
+\left( \boldsymbol{A}_{2}*\boldsymbol{A}_{2}*\boldsymbol{A}_{2} \right)  * \boldsymbol{x}_{2}  = \boldsymbol{b}_{2}
+\end{aligned}
+\end{equation*}
+
+
+
+
+
+\begin{equation*}
+\begin{aligned}
+\boldsymbol{x}_{2}  &= \left(\boldsymbol{A}_{2}*\boldsymbol{A}_{2}*\boldsymbol{A}_{2} \right)^{-1} * \boldsymbol{b}_{2} \\
+\boldsymbol{x}_{2}  &\approx 
+\begin{bmatrix} 
+-3.088 \\
+2.694 \\
+-0.569 \\
+\end{bmatrix}
+\end{aligned}
+\end{equation*}
+
+
+
+Below are codes to compute $\boldsymbol{x}_{2}$. The result is stored in the variable \texttt{example2}.
+
+\begin{verbatim}  
+double A2[] = { 0 , 1 , 2 ,
+                3 , 4 , 5 , 
+                6 , 7 , 0  };
+double B2[] = { 1 , 2 , 3 }; 
+Matrix P2(A2, 3);
+Matrix example2 = (P2*P2*P2) | B2;  
+\end{verbatim}
+
+
+ 
+
+
+
+
+\subsection{Example 3 \& 4} 
+
+$\boldsymbol{A}_{3}$ = $\begin{bmatrix}
+ 0 &  1 &  0 & 0\\
+-1 &  0 &  1 & 0\\ 
+ 0 & -1 &  0 & 1\\
+ 0 &  0 & -1 & 0\\
+\end{bmatrix}$ \hspace{0.5cm} , \hspace{0.5cm} 
+$\boldsymbol{d}$ = $\begin{bmatrix}
+1 \\ 
+2 \\
+3 \\ 
+4 \\ 
+\end{bmatrix}$
+
+\vspace{0.5cm}
+
+Consider the system,
+\begin{equation*}
+\begin{aligned}
+\boldsymbol{A}_{3} * \boldsymbol{x}_{3}  = \boldsymbol{d} 
+\end{aligned}
+\end{equation*}
+
+
+
+
+
+\begin{equation*}
+\begin{aligned}
+\boldsymbol{x}_{3}  &=  \boldsymbol{A}_{3}  ^{-1} * \boldsymbol{d}  \\
+\boldsymbol{x}_{3}  &\approx 
+\begin{bmatrix} 
+-6 \\
+1 \\
+-4 \\
+4\\
+\end{bmatrix}
+\end{aligned}
+\end{equation*}
+
+
+
+Below are codes to compute $\boldsymbol{x}_{3}$. The result is stored in the variables \texttt{example3}. The system for \texttt{example4} is a similar to  \texttt{example3}. The main difference is $\boldsymbol{d}$ is an array and $\boldsymbol{Q}_{3}$ is a matrix object.
+ 
+
+\begin{verbatim}  
+double a[] = { -1, -1, -1 };
+double b[] = { 0, 0, 0, 0};
+double c[] = { 1, 1, 1 };
+double d[] = { 1, 2, 3, 4 };
+Matrix Q3(d, 4,1); 
+Matrix P3(a,b,c,4); 
+Matrix example3 = P3 | d;
+Matrix example4 = P3 | Q3;
+\end{verbatim}
+
+
+
+
+
+
+
+
+\subsection{Example 5 \& 6}
+
+This example demonstrates the use of pseudo inverse to compute a solution of the system below.
+
+$\boldsymbol{A}_{5}$ = $\begin{bmatrix}
+ -74 &  80 &  18 & -11 & -4 \\
+  14 & -69 &  21 &  28 & 0 \\ 
+  66 & -72 &  -5 &   7 & 1 \\
+ -12 &  66 & -30 & -23 & 3 \\
+   3 &   8 &  -7 &  -4 & 1 \\
+   4 & -12 &   4 &   4 & 0\\
+\end{bmatrix}$ 
+\hspace{0.5cm} , \hspace{0.5cm} 
+$\boldsymbol{d}$ = $\begin{bmatrix}
+51 \\
+-61 \\
+-56\\
+ 69\\
+ 10\\
+ -12\\
+\end{bmatrix}$
+
+\vspace{0.5cm}
+
+Consider the system,
+\begin{equation*}
+\begin{aligned}
+\boldsymbol{A}_{5} * \boldsymbol{x}_{5}  = \boldsymbol{d} 
+\end{aligned}
+\end{equation*}
+
+
+
+
+
+\begin{equation*}
+\begin{aligned}
+\boldsymbol{x}_{5}  &=  \boldsymbol{A}_{5}  ^{-1} * \boldsymbol{d}  \\
+\boldsymbol{x}_{5}  &=
+\begin{bmatrix} 
+1 \\
+2 \\
+-1 \\
+3 \\
+-4 \\
+\end{bmatrix}
+\end{aligned}
+\end{equation*}
+
+
+
+Below are codes to compute $\boldsymbol{x}_{5}$. The result is stored in the variables \texttt{example5}. The system for \texttt{example6} is a similar to  \texttt{example5}. The main difference is $\boldsymbol{b}_{5}$ is an array and $\boldsymbol{Q}_{5}$ is a matrix object.
+
+
+\begin{verbatim}  
+double A5[30] = {  -74 ,  80 ,  18 , -11 , -4 ,
+                    14 , -69 ,  21 ,  28 , 0 , 
+                    66 , -72 ,  -5 ,   7 , 1 ,
+                   -12 ,  66 , -30 , -23 , 3 ,
+                     3 ,   8 ,  -7 ,  -4 , 1 ,
+                     4 , -12 ,   4 ,   4 , 0};
+double b5[6] = { 51 , -61 , -56 , 69 , 10 , -12 };
+Matrix P5(A5,6,5); 
+Matrix example5 = P5 | b5;
+Matrix Q5(b5, 6, 1);
+Matrix example6 = P5 | Q5;
+\end{verbatim}
+
+
+
+
+
+
+
+
+\subsection{Example 7}
+
+Consider solving the system below,
+
+\begin{equation*}
+\begin{aligned}
+\underset{\boldsymbol{x},\boldsymbol{y}}{\min} \hspace{0.2cm} || \boldsymbol{y} ||_{2}  \hspace{0.5cm} \text{ subject to } \hspace{0.5cm}  \boldsymbol{d}_{7} = \boldsymbol{A}_{7}\boldsymbol{x} + \boldsymbol{B}_{7}\boldsymbol{y}
+\end{aligned}
+\end{equation*}
+
+
+
+$\boldsymbol{A}_{7}$ = $\begin{bmatrix}
+1 &  2 &  1 & 4  \\
+-1 &  1 &  1 & 1  \\ 
+-1 & -2 & -1 & 1  \\ 
+-1 &  2 & -1 & -1 \\ 
+1 &  1 &  1 & 2 \\
+\end{bmatrix}$ 
+\hspace{0.5cm} , \hspace{0.5cm} 
+$\boldsymbol{B}_{7}$ = $\begin{bmatrix}
+1 &  2 & 2 \\
+-1 &  1 & -2 \\ 
+3 &  1 & 6 \\
+2 & -2 & 4 \\
+1 & -1 & 2\\
+\end{bmatrix}$ 
+\hspace{0.5cm} , \hspace{0.5cm}  
+$\boldsymbol{d}_{7}$ = $\begin{bmatrix}
+7.99 \\
+0.98 \\
+-2.98 \\
+3.04 \\
+4.02 \\
+\end{bmatrix}$ 
+
+
+Solution:
+
+
+$\boldsymbol{x}$ = $\begin{bmatrix}
+1.002951 \\
+2.001436 \\
+-0.987798 \\
+0.990908 \\
+\end{bmatrix}$  
+\hspace{0.5cm} , \hspace{0.5cm}  
+$\boldsymbol{y}$ = $\begin{bmatrix}
+0.003436 \\
+-0.004417 \\
+0.006871 \\
+\end{bmatrix}$ 
+
+
+Below are codes to compute $\boldsymbol{x}$ and $\boldsymbol{y}$. The variable \texttt{info} is used to flag whether the algorithm is able to obtain a solution to the system.
+
+
+
+\begin{verbatim} 
+double *x7 = new double[4];
+double *y7 = new double[3];
+double A7[] = { 1 ,  2 ,  1 ,  4 ,
+               -1 ,  1 ,  1 ,  1 , 
+               -1 , -2 , -1 ,  1 , 
+               -1 ,  2 , -1 , -1 , 
+                1 ,  1 ,  1 ,  2} ;
+double B7[] = { 1 ,  2 ,  2 ,
+               -1 ,  1 , -2 , 
+                3 ,  1 ,  6 ,
+                2 , -2 ,  4 ,
+                1 , -1 , 2 };
+double d7[] = { 7.99 , 0.98 , -2.98 , 3.04 , 4.02 };
+Matrix P7(A7, B7, d7, 5, 4, 3); 
+int info7 = P7.solve(x7,y7); 
+\end{verbatim}
+
+
+
+
+\subsection{Example 8}
+
+
+Consider solving the system below,
+
+\begin{equation*}
+\begin{aligned}
+\underset{\boldsymbol{x}_{8}}{\min} \hspace{0.2cm} ||\boldsymbol{d}_{8} - \boldsymbol{A}_{8}\boldsymbol{x}_{8} ||_{2}  \hspace{0.5cm} \text{ subject to } \hspace{0.5cm}   \boldsymbol{H}_{8}\boldsymbol{x}_{8} = \boldsymbol{f}_{8}
+\end{aligned}
+\end{equation*}
+
+
+
+$\boldsymbol{A}_{8}$ = $\begin{bmatrix}
+1 &  1 & 1 \\ 
+1 &  3 & 1 \\ 
+1 & -1 & 1 \\
+1 &  1 & 1 \\
+\end{bmatrix}$ 
+\hspace{0.5cm} , \hspace{0.5cm} 
+$\boldsymbol{d}_{8}$ = $\begin{bmatrix}
+1 \\  
+2 \\ 
+3 \\ 
+4\\
+\end{bmatrix}$ 
+\hspace{0.5cm} , \hspace{0.5cm}  
+$\boldsymbol{H}_{8}$ = $\begin{bmatrix}
+1 & 1 & 1 \\
+1 & 1 & -1 \\
+\end{bmatrix}$ 
+\hspace{0.5cm} , \hspace{0.5cm}   
+$\boldsymbol{f}_{8}$ = $\begin{bmatrix}
+7 \\
+4 \\
+\end{bmatrix}$ 
+
+Solution:
+
+
+$\boldsymbol{x}_{8}$ = $\begin{bmatrix}
+5.75 \\
+-0.25 \\
+1.5  \\
+\end{bmatrix}$   
+
+
+
+Below are codes to compute a solution to the system. The variable \texttt{info} is used to flag whether the algorithm is able to obtain a solution to the system.
+
+
+
+
+\begin{verbatim}  
+double A8[] = { 1 ,  1 , 1 , 
+                1 ,  3 , 1 , 
+                1 , -1 , 1 , 
+                1 ,  1 , 1};
+double H8[] = { 1 , 1 , 1 ,
+                1 , 1 , -1 };
+double D8[] = { 1 ,  2 , 3 , 4 };
+double F8[] = { 7 ,
+4 };
+double *x8 = new double[3];
+Matrix P8(A8, D8, H8, F8, 4, 3, 2);
+int info8 = P8.solve(x8);
+printf("\n X8 = \n ");
+Matrix::printMatrix(x8,3,1);
+\end{verbatim}
+
+
+\section{Constructor}
+Below is a description of the syntax used to create a single matrix or a matrix system.
+
+
+\subsection{Create a Single Matrix Object}
+
+
+
+\subsubsection{\texttt{Matrix( double Ain[], int nd )}}
+ 
+This is used to create a square matrix with dimension of $n_{d}*n_{d}$.
+The variable $A_{in}$ is an array storing entries of the matrix. The entries are read in row by row. 
+
+ 
+\subsubsection{\texttt{Matrix(double Ain[], int nd , int md)}}
+
+
+This is used to create a general matrix with dimension of $n_{d}*m_{d}$. 
+The variable $A_{in}$ is an array storing entries of the matrix. The entries are read in row by row. 
+
+ 
+\subsubsection{\texttt{Matrix(double ain[], double bin[], double cin[], int nd)}}
+
+Create a tridiagonal matrix with dimension of $n_{d}*n_{d}$.
+The array $b_{in}$ is the main diagonal with $n_{d}$ number of entries. The array $a_{in}$ is the subdiagonal with $n_{d}-1$ number of entries. The array $c_{in}$ is the superdiagonal  with $n_{d}-1$ number of entries. 
+
+
+\subsubsection{\texttt{Matrix(double Ain[], int nd, int md, bool isTranspose)}}
+
+
+This is used to create a general matrix with dimension of $n_{d}*m_{d}$. The variable $A_{in}$ is an array storing entries of the matrix. The entries are read in row by row if \texttt{isTranspose} is \texttt{false}. On the other hand, if  \texttt{isTranspose} is \texttt{true} entries are read in column by column. 
+
+
+\subsubsection{\texttt{Matrix(double Ain[], int nd, int md, bool isTranspose, int flag)}}
+
+This is used to create a general matrix with dimension of $n_{d}*m_{d}$. The variable $A_{in}$ is an array storing entries of the matrix. The entries are read in row by row if \texttt{isTranspose} is \texttt{false}. On the other hand, if  \texttt{isTranspose} is \texttt{true} entries are read in column by column. The parameter input \texttt{flag} is used to set the default \texttt{info}  about the matrix. That is, if \texttt{flag} = 0, then the matrix is non-singular. It should be noted that \texttt{info}  is an instance field of the Matrix class.
+
+ 
+\subsection{Create a Matrix System}
+
+
+
+\subsubsection{\texttt{Matrix(double Ain[], double din[], double Hin[], double fin[], int nd , int md, int pd)}}
+
+This is used to construct the following matrix system.
+
+
+\begin{equation*}
+\begin{aligned}
+\underset{\boldsymbol{x}}{\min} \hspace{0.2cm} ||\boldsymbol{d} - \boldsymbol{A}\boldsymbol{x} ||_{2}  \hspace{0.5cm} \text{ subject to } \hspace{0.5cm}   \boldsymbol{H}\boldsymbol{x} = \boldsymbol{f}
+\end{aligned}
+\end{equation*}
+
+Dimension of the matrix: 
+\begin{equation*}
+\begin{aligned}
+\boldsymbol{A} &\hspace{0.7cm}&& \text{dimension } n_{d}*m_{d} \\
+\boldsymbol{H} &\hspace{0.7cm}&& \text{dimension } p_{d}*m_{d}\\
+\boldsymbol{d} &\hspace{0.7cm}&& \text{dimension } n_{d}*1\\
+\boldsymbol{f} &\hspace{0.7cm}&& \text{dimension } p_{d}*1\\
+\boldsymbol{x} &\hspace{0.7cm}&& \text{dimension } m_{d}*1\\
+\end{aligned}
+\end{equation*}
+
+
+The method ``\texttt{int Matrix::solve(double xinout[])}" is used to solve the system.
+
+
+\subsubsection{\texttt{Matrix(double Ain[], double Bin[], double din[], int nd, int md, int pd)}}
+
+
+This is used to construct the following matrix system.
+
+
+
+\begin{equation*}
+\begin{aligned}
+\underset{\boldsymbol{x},\boldsymbol{y}}{\min} \hspace{0.2cm} || \boldsymbol{y} ||_{2}  \hspace{0.5cm} \text{ subject to } \hspace{0.5cm}  \boldsymbol{d}  = \boldsymbol{A} \boldsymbol{x} + \boldsymbol{B} \boldsymbol{y}
+\end{aligned}
+\end{equation*}
+
+
+Dimension of the matrix: 
+\begin{equation*}
+\begin{aligned}
+\boldsymbol{A} &\hspace{0.7cm}&& \text{dimension } n_{d}*m_{d} \\
+\boldsymbol{B} &\hspace{0.7cm}&& \text{dimension } n_{d}*p_{d} \\
+\boldsymbol{d} &\hspace{0.7cm}&& \text{dimension } n_{d}*1 \\
+\boldsymbol{x} &\hspace{0.7cm}&& \text{dimension } m_{d}*1 \\
+\boldsymbol{y} &\hspace{0.7cm}&& \text{dimension } p_{d}*1 \\
+\end{aligned}
+\end{equation*}
+ 
+The method  ``\texttt{int Matrix::solve(double xinout[], double yinout[])}'' is used to solve the system.
+
+
+\section{Methods} 
+
+\subsubsection{\texttt{int Matrix::solve(double xinout[])}}
+
+This method is used to solve the system 
+\begin{equation*}
+\begin{aligned}
+\underset{\boldsymbol{x}}{\min} \hspace{0.2cm} ||\boldsymbol{d} - \boldsymbol{A}\boldsymbol{x} ||_{2}  \hspace{0.5cm} \text{ subject to } \hspace{0.5cm}   \boldsymbol{H}\boldsymbol{x} = \boldsymbol{f}
+\end{aligned}
+\end{equation*}
+
+Solution of the system is stored in the array $x_{inout}$.
+
+ 
+\subsubsection{\texttt{int Matrix::solve(double xinout[], double yinout[])}}
+ 
+This method is used to solve the system 
+ 
+
+\begin{equation*}
+\begin{aligned}
+\underset{\boldsymbol{x},\boldsymbol{y}}{\min} \hspace{0.2cm} || \boldsymbol{y} ||_{2}  \hspace{0.5cm} \text{ subject to } \hspace{0.5cm}  \boldsymbol{d}  = \boldsymbol{A} \boldsymbol{x} + \boldsymbol{B} \boldsymbol{y}
+\end{aligned}
+\end{equation*}
+
+ 
+ Solution of the system is stored in the array $x_{inout}$ and $y_{inout}$ .
+
+
+\subsubsection{\texttt{ void Matrix::printMatrix()}}
+
+This method is used to print to console all the matrix entries stored in the Matrix object. 
+
+
+\subsubsection{\texttt{static void Matrix::printMatrix(double input[], int nd, int md)}}
+
+This method is used to print to console all the matrix entries stored in an array \texttt{input}. The dimension of the matrix is $n_{d}*m_{d}$.
+
+
+\section{Operators} 
+	\begin{tabular}{|c|c|l|} 
+		\hline
+		Operator & Example & Description    \\  
+		\hline
+		+& $\boldsymbol{A} + \boldsymbol{B} $ & Adding two matrix object.  \\
+		-& $\boldsymbol{A} - \boldsymbol{B}$ & Substract two matrix object.  \\
+		*&   $c*\boldsymbol{A}$  &  multiply matrix $\boldsymbol{A}$ with a scalar $c$  \\
+		*& $\boldsymbol{A}*c$ & multiply matrix $\boldsymbol{A}$ with a scalar $c$  \\
+		*& $\boldsymbol{A}*\boldsymbol{B}$ &  multiply matrix two matrix together  \\
+		$|$& $\boldsymbol{A} \hspace{0.1cm} | \hspace{0.1cm} \boldsymbol{b}$ & $\boldsymbol{b}$ is an array, compute $\boldsymbol{A}^{-1} \boldsymbol{b}$.  If  $\boldsymbol{A}$ is not a square, matrix pseudo inverse is used. \\
+		$|$& $\boldsymbol{A} \hspace{0.1cm} | \hspace{0.1cm} \boldsymbol{B}$  &  $\boldsymbol{B}$ is matrix, compute $\boldsymbol{A}^{-1} \boldsymbol{B}$. If  $\boldsymbol{A}$ is not a square matrix, pseudo inverse is used. \\
+		\hline
+	\end{tabular} 
+
+
+
+
+\end{document}
+
+ 
+
+
+
+%\font size
+%   1.  \tiny
+%   2. \scriptsize
+%   3. \footnotesize
+%   4. \small
+%   5. \normalsize
+%   6. \large
+%   7. \Large
+%   8. \LARGE
+%   9. \huge
+%  10. \Huge 
